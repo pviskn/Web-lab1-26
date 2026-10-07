@@ -397,3 +397,35 @@ main {
     color: var(--color-text-light);
     margin-top: 50px;
 }
+
+/* адаптивность */
+/* планшеты */
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+    }
+
+    header {
+        padding: 15px;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    #cart-panel {
+        width: 100%;  /* корзина на весь экран */
+    }
+}
+
+/* телефоны */
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr;  /* по карточке в ряд */
+    }
+
+    #cart-panel,
+    #order-form {
+        width: 95%;
+        padding: 20px;
+    }
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cake by Pviskn - десерты на заказ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1 class="logo">Cake by Pviskn</h1>
+        <button id="cart-btn" class="cart-button">
+            Корзина (<span id="cart-count">0</span>)
+        </button>
+    </header>
+
+
+    <main>
+        <section id="catalog">
+            <h2>Каталог</h2>
+            <div id="products-list" class="products-grid">
+            </div>
+        </section>
+    </main>
+
+    <aside id="cart-panel" class="hidden">
+        <div class="cart-header">
+            <h2>Ваша корзина</h2>
+            <button id="close-cart-btn" class="close-btn">✕</button>
+        </div>
+        <div id="cart-items">
+        </div>
+        <div class="cart-footer">
+            <p class="total">Итого: <span id="cart-total">0</span> ₽</p>
+            <button id="checkout-btn">Оформить заказ</button>
+        </div>
+    </aside>
+
+    <div id="order-form" class="hidden">
+        <div class="form-header">
+            <h2>Оформление заказа</h2>
+            <button type="button" id="close-form-btn" class="close-btn">✕</button>
+        </div>
+        <form id="order-form-element">
+            <label>
+                Имя:
+                <input type="text" name="firstName" required>
+            </label>
+            <label>
+                Фамилия:
+                <input type="text" name="lastName" required>
+            </label>
+            <label>
+                Адрес доставки:
+                <input type="text" name="address" required>
+            </label>
+            <label>
+                Телефон:
+                <input type="tel" name="phone" required>
+            </label>
+            <button type="submit">Создать заказ</button>
+        </form>
+    </div>
+
+    
+    <footer>
+        <p>© 2026 Cake by Pviskn</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+:root {
+    /* палитра */
+    --color-primary: #7b2cbf;
+    --color-primary-hover: #5a189a;
+    --color-bg: #ede3f7;   
+    --color-card-bg: #ffffff; 
+    --color-text: #2d0a31;
+    --color-text-light: #6c757d; 
+    --shadow: 0 4px 12px rgba(123, 44, 191, 0.1);
+}
+
+/* убираю отступы у всех элементов */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+/* чтобы корзины и блока заказа не было на главной странице */
+.hidden {
+    display: none !important;
+}
+
+/* шапка страницы */
+
+header {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: white;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.cart-button {
+    background-color: white;
+    color: var(--color-primary);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cart-button:hover {
+    background-color: #f0e6ff;
+}

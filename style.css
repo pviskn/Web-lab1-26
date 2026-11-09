@@ -1,10 +1,10 @@
 :root {
     --color-primary: #7b2cbf;
     --color-primary-hover: #5a189a;
-    --color-bg: #ede3f7;   
-    --color-card-bg: #ffffff; 
+    --color-bg: #ede3f7;
+    --color-card-bg: #ffffff;
     --color-text: #2d0a31;
-    --color-text-light: #6c757d; 
+    --color-text-light: #6c757d;
 }
 
 /* убираю отступы у всех элементов */
@@ -96,7 +96,6 @@ footer {
 .footer-contacts h3,
 .footer-socials h3 {
     margin-bottom: 15px;
-    font-size: 1.3rem;
 }
 
 .footer-contacts ul {
@@ -428,4 +427,21 @@ main {
         width: 95%;
         padding: 20px;
     }
+}
+
+/* сообщения */
+.status-message {
+    position: fixed;
+    top: 85px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 400;
+    background-color: white;
+    color: var(--color-text);
+    border: 2px solid var(--color-primary);
+    padding: 12px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    max-width: 90%;
 }

@@ -1,4 +1,4 @@
-// массив товаров
+ // массив товаров
 const products = [
     { id: 1, name: "Моти", price: 1500, image: "images/moti.png" },
     { id: 2, name: "Кукисы", price: 1200, image: "images/cookie.png" },
@@ -14,7 +14,7 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 function renderCatalog() {
     const container = document.getElementById('products-list');
-    container.innerHTML = '';
+    container.replaceChildren();
 
     products.forEach(product => {
         const itemInCart = cart.find(item => item.id === product.id);
@@ -24,29 +24,54 @@ function renderCatalog() {
         card.className = 'product-card';
         card.dataset.id = product.id;
 
-        const buttonHTML = quantity === 0 
-            ? `<button class="btn-add">Добавить в корзину</button>`
-            : `<div class="quantity-control">
-                   <button class="btn-minus">−</button>
-                   <span class="quantity-value">${quantity}</span>
-                   <button class="btn-plus">+</button>
-               </div>`;
+        const image = document.createElement('img');
+        image.src = product.image;
+        image.alt = product.name;
+        image.className = 'product-image';
 
-        card.innerHTML = `
-            <img src="${product.image}" alt="${product.name}" class="product-image">
-            <h3 class="product-name">${product.name}</h3>
-            <p class="product-price">${product.price} ₽</p>
-            ${buttonHTML}
-        `;
-        
-        container.appendChild(card);
+        const name = document.createElement('h3');
+        name.className = 'product-name';
+        name.textContent = product.name;
+
+        const price = document.createElement('p');
+        price.className = 'product-price';
+        price.textContent = product.price + ' ₽';
+
+        card.append(image, name, price);
+
+        if (quantity === 0) {
+            const button = document.createElement('button');
+            button.className = 'btn-add';
+            button.textContent = 'Добавить в корзину';
+            card.append(button);
+        } else {
+            const controls = document.createElement('div');
+            controls.className = 'quantity-control';
+
+            const minusButton = document.createElement('button');
+            minusButton.className = 'btn-minus';
+            minusButton.textContent = '−';
+
+            const value = document.createElement('span');
+            value.className = 'quantity-value';
+            value.textContent = quantity;
+
+            const plusButton = document.createElement('button');
+            plusButton.className = 'btn-plus';
+            plusButton.textContent = '+';
+
+            controls.append(minusButton, value, plusButton);
+            card.append(controls);
+        }
+
+        container.append(card);
     });
 }
 
 // взаимодействие с кнопками
 document.getElementById('products-list').addEventListener('click', (e) => {
     const card = e.target.closest('.product-card');
-    if (!card) return; 
+    if (!card) return;
     const id = Number(card.dataset.id);
 
     if (e.target.classList.contains('btn-add')) {
@@ -89,12 +114,15 @@ function saveAndRender() {
 function renderCartPanel() {
     const container = document.getElementById('cart-items');
     const totalElement = document.getElementById('cart-total');
-    
-    container.innerHTML = '';
+
+    container.replaceChildren();
     let totalPrice = 0;
 
     if (cart.length === 0) {
-        container.innerHTML = '<p class="empty-cart-msg">Корзина пуста 🍰</p>';
+        const emptyMessage = document.createElement('p');
+        emptyMessage.className = 'empty-cart-msg';
+        emptyMessage.textContent = 'Корзина пуста 🍰';
+        container.append(emptyMessage);
         totalElement.textContent = '0';
         return;
     }
@@ -105,14 +133,25 @@ function renderCartPanel() {
 
         const div = document.createElement('div');
         div.className = 'cart-item';
-        div.innerHTML = `
-            <div class="cart-item-info">
-                <strong>${item.name}</strong><br>
-                <small>${item.price} ₽ x ${item.quantity} = ${itemTotal} ₽</small>
-            </div>
-            <button class="btn-delete" data-id="${item.id}">✕</button>
-        `;
-        container.appendChild(div);
+
+        const info = document.createElement('div');
+        info.className = 'cart-item-info';
+
+        const name = document.createElement('strong');
+        name.textContent = item.name;
+
+        const details = document.createElement('small');
+        details.textContent = item.price + ' ₽ x ' + item.quantity + ' = ' + itemTotal + ' ₽';
+
+        info.append(name, document.createElement('br'), details);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'btn-delete';
+        deleteButton.dataset.id = item.id;
+        deleteButton.textContent = '✕';
+
+        div.append(info, deleteButton);
+        container.append(div);
     });
 
     totalElement.textContent = totalPrice;
@@ -126,10 +165,30 @@ document.getElementById('cart-items').addEventListener('click', (e) => {
     }
 });
 
+// сообщения для пользователя
+const statusMessage = document.createElement('p');
+statusMessage.className = 'status-message hidden';
+statusMessage.setAttribute('role', 'status');
+document.body.append(statusMessage);
+
+let messageTimeout;
+
+function showMessage(text) {
+    statusMessage.textContent = text;
+    statusMessage.classList.remove('hidden');
+
+    clearTimeout(messageTimeout);
+
+    messageTimeout = setTimeout(function() {
+        statusMessage.classList.add('hidden');
+    }, 5000);
+}
+
 const cartPanel = document.getElementById('cart-panel');
 const orderForm = document.getElementById('order-form');
 
 document.getElementById('cart-btn').addEventListener('click', () => {
+    statusMessage.classList.add('hidden');
     cartPanel.classList.remove('hidden');
 });
 
@@ -139,7 +198,7 @@ document.getElementById('close-cart-btn').addEventListener('click', () => {
 
 document.getElementById('checkout-btn').addEventListener('click', () => {
     if (cart.length === 0) {
-        alert('Ваша корзина пуста!');
+        showMessage('Ваша корзина пуста!');
         return;
     }
     cartPanel.classList.add('hidden');
@@ -154,12 +213,12 @@ document.getElementById('close-form-btn').addEventListener('click', () => {
 document.getElementById('order-form-element').addEventListener('submit', (e) => {
     e.preventDefault();
 
-    alert('Заказ создан!');
+    showMessage('Заказ создан!');
 
     cart = [];
-    saveAndRender(); 
+    saveAndRender();
     e.target.reset();
-    orderForm.classList.add('hidden'); 
+    orderForm.classList.add('hidden');
 });
 
 renderCatalog();
